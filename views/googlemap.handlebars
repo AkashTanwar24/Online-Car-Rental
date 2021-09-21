@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>Add Map</title>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script src="./index.js"></script>
+    <style>
+      #map { height: 600px; width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script>
+        $(document).ready(
+          // Initialize and add the map
+          function initMap() {
+          // The location of Uluru
+          const uluru = { lat: 28.7041, lng: 77.1025 };
+            // The map, centered at Uluru
+            const map = new google.maps.Map(document.getElementById("map"), {
+              zoom: 8,
+              center: uluru,
+            });
+
+            var socket = io();
+            // Listen to allcars event to receive all cars 
+              socket.on("allcars",function(cars){
+                console.log("AllCars",cars)
+                //Loop through Cars array
+                for(var i =0;i<cars.cars.length;i++){
+                  console.log(cars.cars[i])
+                  // The marker, positioned at Uluru
+         function addMarker(){
+           
+                    const marker = new google.maps.Marker({
+                    position: {lat: cars.cars[i].coords.lat, lng: cars.cars[i].coords.lng},
+                    map: map,
+                    });
+
+                    var infoWindow = new google.maps.InfoWindow({
+                      content:`<a href="/displayCar/${cars.cars[i]._id}">
+                      <h3>${cars.cars[i].make}</h3>
+                      <p><b>Modal: </b>${cars.cars[i].modal},<b>Year: </b>${cars.cars[i].year}</p>
+                      <p>$${cars.cars[i].pricePerHour}per hour</p>
+                      <p>$${cars.cars[i].pricePerWeek} per week</p>
+                      <img src="${cars.cars[i].picture}" width="70px">
+                      </a>`
+                    })
+
+                    marker.addListener('click',function(){
+                      infoWindow.open(map,marker)
+                    })
+                 }
+                  addMarker();
+          }
+                })
+              });
+
+            
+    </script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwFQiRGzzRnnlsL9aaTwZ4HW4Aaxt8ml4&callback=initMap&libraries=&v=weekly"
+     
+    ></script>
+  </body>
+</html>

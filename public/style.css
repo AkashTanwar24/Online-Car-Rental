@@ -1,0 +1,28 @@
+.center {
+  text-align: center;
+}
+
+/* Remove underline from Link */
+.nounderline {
+  text-decoration: none !important;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+
+.btn-1 {
+  margin-top: 10px;
+}
+
+#list {
+  margin-bottom: 100px;
+  margin-bottom: 20px;
+  width: 700px;
+  height: 400px;
+  overflow-y: scroll;
+}
